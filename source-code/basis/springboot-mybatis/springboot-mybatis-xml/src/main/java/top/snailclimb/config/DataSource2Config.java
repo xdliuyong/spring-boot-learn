@@ -19,7 +19,7 @@ import javax.sql.DataSource;
 public class DataSource2Config {
 
     @Bean(name = "db2DataSource")
-    @ConfigurationProperties(prefix = "spring.datasource.db2")
+    @ConfigurationProperties(prefix = "spring.datasource.db2") // 此处为application.properties中的数据源前缀
     public DataSource testDataSource() {
         return DataSourceBuilder.create().build();
     }
@@ -28,6 +28,7 @@ public class DataSource2Config {
     public SqlSessionFactory testSqlSessionFactory(@Qualifier("db2DataSource") DataSource dataSource) throws Exception {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
+        // 设置mybatis数据库语句采用xml配置形式, xml地址为resources下mapper文件中的xml
         bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:/mapper/db2/*.xml"));
         return bean.getObject();
     }
